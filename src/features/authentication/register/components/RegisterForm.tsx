@@ -1,31 +1,90 @@
 "use client";
 
 import { useForm, useFormContext } from "react-hook-form";
+import { RegisterForm, registerFormSchema } from "../forms/register";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
 
-const form = useFormContext();
+// const form = useFormContext();
+// const {
+//   control,
+//   formState: { errors },
+//   register,
+//   reset,
+// } = useForm<RegisterForm>({
+//   resolver: zodResolver(registerFormSchema),
+//   defaultValues: {
+//     email: "",
+//     username: "",
+//     password: "",
+//     passwordConfirmation: "",
+//   },
+// });
 
-const RegisterForm = () => {
+type RegisterFormProps = {
+  defaultValue: {
+    email: string;
+    username: string;
+    password: string;
+    passwordConfirmation: string;
+  };
+};
+
+const InnerRegisterForm: React.FC = () => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useFormContext<RegisterForm>();
+
   return (
-    <form className="bg-slate-700 p-4 rounded-lg flex gap-4 flex-col min-w-full md:min-w-[50%] lg:min-w-[30%] ">
+    <>
       <div className="flex flex-col gap-1">
         <label className="text-white ">username</label>
-        <input type="text" className="text-black p-1 rounded-lg"></input>
+        <input
+          type="text"
+          {...register("username")}
+          className="text-black p-1 rounded-lg"
+        ></input>
+        {errors.username && (
+          <p className="text-red-400">{errors.username.message}</p>
+        )}
       </div>
       <div className="flex flex-col gap-1 ">
         <label className="text-white">email</label>
-        <input type="email" className="text-black p-1 rounded-lg"></input>
+        <input
+          type="email"
+          {...register("email")}
+          className="text-black p-1 rounded-lg"
+        ></input>
+        {errors.email && <p className="text-red-400">{errors.email.message}</p>}
       </div>
       <div className="flex flex-col gap-1">
         <label className="text-white">password</label>
-        <input type="password" className="text-black p-1 rounded-lg"></input>
+        <input
+          type="password"
+          {...register("password")}
+          className="text-black p-1 rounded-lg"
+        ></input>
+        {errors.password && (
+          <p className="text-red-400">{errors.password.message}</p>
+        )}
       </div>
       <div className="flex flex-col gap-1">
-        <label className="text-white">confirm password</label>
-        <input type="password" className="text-black p-1 rounded-lg"></input>
+        <label {...register("passwordConfirmation")} className="text-white">
+          confirm password
+        </label>
+        <input
+          type="password"
+          {...register("passwordConfirmation")}
+          className="text-black p-1 rounded-lg"
+        ></input>
+        {errors.passwordConfirmation && (
+          <p className="text-red-400">{errors.passwordConfirmation.message}</p>
+        )}
       </div>
-      <button className="bg-black rounded-lg p-2">Register</button>
-    </form>
+    </>
   );
 };
 
-export default RegisterForm;
+export default InnerRegisterForm;

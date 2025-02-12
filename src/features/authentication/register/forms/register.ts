@@ -4,12 +4,36 @@ export const registerFormSchema = z
   .object({
     email: z.string().email(),
     username: z.string().min(3),
-    password: z.string().min(6),
-    passwordConfirmation: z.string().min(6),
+    password: z
+      .string()
+      .min(8)
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+      .regex(/\d/, "Password must contain at least one number")
+      .regex(
+        /[@$!%*?&]/,
+        "Password must contain at least one special character (@$!%*?&)"
+      ),
+    passwordConfirmation: z
+      .string()
+      .min(8)
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+      .regex(/\d/, "Password must contain at least one number")
+      .regex(
+        /[@$!%*?&]/,
+        "Password must contain at least one special character (@$!%*?&)"
+      ),
   })
-  .refine((data) => data.password === data.passwordConfirmation, {
-    message: "Password do not match",
-    path: ["passwordConfirmation"],
+  .superRefine(({ password, passwordConfirmation }, ctx) => {
+    console.log("🔍 Running superRefine validation..."); // Debug log
+    if (password !== passwordConfirmation) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Passwords do not match",
+        path: ["passwordConfirmation"],
+      });
+    }
   });
 
-export type RegistrationFormSchema = z.infer<typeof registerFormSchema>;
+export type RegisterForm = z.infer<typeof registerFormSchema>;
