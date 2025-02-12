@@ -47,4 +47,5 @@ export const options: AuthOptions = {
     verifyRequest: "/auth/verify-request",
   },
   callbacks: {},
+  secret: process.env.NEXTAUTH_SECRET,
 };
