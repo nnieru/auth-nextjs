@@ -49,9 +49,13 @@ export const options: AuthOptions = {
     verifyRequest: "/auth/verify-request",
   },
   callbacks: {
-    async session({ user, session }) {
-      console.log(user);
-      console.log(session);
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
       return session;
     },
   },

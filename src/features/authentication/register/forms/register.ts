@@ -26,7 +26,7 @@ export const registerFormSchema = z
       ),
   })
   .superRefine(({ password, passwordConfirmation }, ctx) => {
-    console.log("🔍 Running superRefine validation..."); // Debug log
+    // console.log("🔍 Running superRefine validation..."); // Debug log
     if (password !== passwordConfirmation) {
       ctx.addIssue({
         code: "custom",

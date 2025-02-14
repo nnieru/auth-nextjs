@@ -1,40 +1,14 @@
 "use client";
 
-import { useForm, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { RegisterForm, registerFormSchema } from "../forms/register";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import React from "react";
-
-// const form = useFormContext();
-// const {
-//   control,
-//   formState: { errors },
-//   register,
-//   reset,
-// } = useForm<RegisterForm>({
-//   resolver: zodResolver(registerFormSchema),
-//   defaultValues: {
-//     email: "",
-//     username: "",
-//     password: "",
-//     passwordConfirmation: "",
-//   },
-// });
-
-type RegisterFormProps = {
-  defaultValue: {
-    email: string;
-    username: string;
-    password: string;
-    passwordConfirmation: string;
-  };
-};
 
 const InnerRegisterForm: React.FC = () => {
   const {
     register,
     formState: { errors },
-    handleSubmit,
   } = useFormContext<RegisterForm>();
 
   return (
