@@ -5,6 +5,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { type RegisterForm, registerFormSchema } from "../forms/register";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRegister } from "../hooks/useRegister";
+import toast from "react-hot-toast";
 
 const RegisterPage = () => {
   const form = useForm<RegisterForm>({
@@ -17,10 +18,9 @@ const RegisterPage = () => {
     resolver: zodResolver(registerFormSchema),
   });
 
-  const { mutate: register, isPending, isSuccess } = useRegister();
+  const { mutate: register, isPending } = useRegister();
 
-  const onSubmit = (data: RegisterForm, event?: React.BaseSyntheticEvent) => {
-    event?.preventDefault();
+  const onSubmit = (data: RegisterForm) => {
     register(
       {
         username: data.username,
@@ -30,13 +30,18 @@ const RegisterPage = () => {
       {
         onSuccess: () => {
           form.reset();
+          toast.success("Account created successfully");
+        },
+        onError: (error) => {
+          console.log(error);
+          toast.error(error.message);
         },
       }
     );
   };
 
   const onError = (errors: any) => {
-    console.log("❌ Validation failed!", errors);
+    console.log(errors);
   };
 
   return (
@@ -52,8 +57,12 @@ const RegisterPage = () => {
               onSubmit={form.handleSubmit(onSubmit, onError)}
             >
               <InnerRegisterForm />
-              <button type="submit" className="bg-black rounded-lg p-2">
-                Register
+              <button
+                type="submit"
+                className="bg-black rounded-lg p-2 hobver:bg-gray-800"
+                disabled={isPending}
+              >
+                {isPending ? "Registering..." : "Register"}
               </button>
             </form>
           </FormProvider>

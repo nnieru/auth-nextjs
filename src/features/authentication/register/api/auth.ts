@@ -13,8 +13,13 @@ export const registerUser = async (
   });
 
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Registration failed");
+    const contentType = response.headers.get("content-type");
+    const errorMessage = contentType?.includes("application/json")
+      ? (await response.json()).message
+      : await response.text();
+
+    console.log(errorMessage);
+    throw new Error(errorMessage || "Registration failed");
   }
 
   return await response.json();

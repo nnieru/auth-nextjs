@@ -45,9 +45,7 @@ const InnerRegisterForm: React.FC = () => {
         )}
       </div>
       <div className="flex flex-col gap-1">
-        <label {...register("passwordConfirmation")} className="text-white">
-          confirm password
-        </label>
+        <label className="text-white">confirm password</label>
         <input
           type="password"
           {...register("passwordConfirmation")}
