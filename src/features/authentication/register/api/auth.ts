@@ -3,7 +3,6 @@ import { RegisterData, RegisterResponse } from "../model/register";
 export const registerUser = async (
   data: RegisterData
 ): Promise<RegisterResponse> => {
-  console.log("Registering user with data:", data);
   const response = await fetch("/api/auth/register", {
     method: "POST",
     headers: {
